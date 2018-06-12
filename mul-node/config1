@@ -1,0 +1,13 @@
+root = "./"
+thread = 8
+logger = nil
+harbor = 0
+start = "main_cluster1"
+bootstrap = "snlua bootstrap"   -- The service for bootstrap
+luaservice = "./service/?.lua;./test/?.lua;./examples/?.lua;./myexample/mul-node/?.lua"
+lualoader = "lualib/loader.lua"
+--兼容skynet1.0
+lua_path = "./lualib/compat10/?.lua;./lualib/?.lua;./lualib/?/?.lua"
+cpath = "./cservice/?.so"
+cluster = "./myexample/mul-node/clustername.lua"
+snax = "./test/?.lua"
