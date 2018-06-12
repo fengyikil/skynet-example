@@ -5,19 +5,18 @@ require "skynet.manager"
 
 function test( )
      skynet.timeout(100,test)
-     cluster.call("cluster1", ".cluster1Server", "request", "clustr2Sever call cluster1server , please answer!!!")            
+     cluster.call("cluster1", ".cluster1Server", "request", "clustr2Sever call cluster1server , please answer!!!")
 end
 
 local CMD = {}
 
 function CMD.request(str)
-    skynet.error(string.format("[cluste2 MSG] cluster2Sever get a request: %s", str))
+    print("cluster2 rec :"..str)
 end
 
 skynet.start(function()
     skynet.dispatch("lua", function(session, source, cmd, ...)
-        local f = assert(CMD[cmd], cmd .. "not found")
-       -- f(...) -- suggest use skynet.retpack,it will auto response
+       local f=CMD[cmd]
         skynet.retpack(f(...))
     end)
 

@@ -1,0 +1,1 @@
+创建两个服务，互相发消息，注意skynet.call和skynet.send的区别。call是需要返回的，send不需要。

@@ -1,0 +1,1 @@
+cluster使用，两个节点互相通信，注意cluster.call的使用。

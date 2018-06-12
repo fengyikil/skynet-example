@@ -6,13 +6,12 @@ skynet.start(function()
     print("======Server start=======")
     -- skynet.newservice(name, ...)启动一个新的 Lua 服务(服务脚本文件名)
 
-    local service2 = skynet.newservice("service2")
+    local s1 = skynet.newservice("service1")
     -- 向service2服务发出请求，设置key1的值
-   local ret = skynet.call(service2,"lua","set","key1","value111111")  
-   print("12"..ret)
+    local ret = skynet.call(s1,"lua","set","key1","you are so cute!")  
     -- 向service2服务发出请求，获取key1的值
-    local kv = skynet.call(service2,"lua","get","key1")
-    print("15"..kv)
+    local kv = skynet.call(s1,"lua","get","key1")
+    print("main ret is :"..kv)
 
     -- 退出当前的服务
     skynet.exit()

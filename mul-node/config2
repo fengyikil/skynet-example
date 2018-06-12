@@ -6,7 +6,8 @@ start = "main_cluster2"
 bootstrap = "snlua bootstrap"   -- The service for bootstrap
 luaservice = "./service/?.lua;./test/?.lua;./examples/?.lua;./myexample/mul-node/?.lua"
 lualoader = "lualib/loader.lua"
---兼容skynet1.0
+
+--snlua 相关项
 lua_path = "./lualib/compat10/?.lua;./lualib/?.lua;./lualib/?/?.lua"
 cpath = "./cservice/?.so"
 cluster = "./myexample/mul-node/clustername.lua"

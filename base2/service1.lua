@@ -6,21 +6,21 @@ local db = {}
 local command = {}
 
 function command.get(key)
-    print("comman.get:"..key)   
+    print("service comman.get:"..key)   
     return db[key]
 end
 
 function command.set(key, value)
-    print("comman.set:key="..key..",value:"..value) 
+    print("service comman.set:key="..key..",value:"..value) 
     db[key] = value
     local last = db[key]
     return last
 end
 
 skynet.start(function()
-    print("==========Service2 Start=========")
+    print("==========Service Start=========")
     skynet.dispatch("lua", function(session, address, cmd, ...)
-        print("==========Service2 dispatch============"..cmd)
+        print("==========Service dispatch============"..cmd)
         local f = command[cmd]      
         if f then
             -- 回应一个消息可以使用 skynet.ret(message, size) 。
@@ -31,5 +31,5 @@ skynet.start(function()
         end
     end)
     --可以为自己注册一个别名。（别名必须在 32 个字符以内）
-    skynet.register "SERVICE2"
+    -- skynet.register "SERVICE"
 end)
