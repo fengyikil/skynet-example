@@ -1,15 +1,37 @@
 package.cpath = "luaclib/?.so"
-package.path = "lualib/?.lua;myexample/e5/?.lua"
+package.path = "lualib/?.lua;skynet-example/proto/?.lua"
 
-if _VERSION ~= "Lua 5.3" then
-    error "Use lua 5.3"
+local print = print
+local tconcat = table.concat
+local tinsert = table.insert
+local srep = string.rep
+local type = type
+local pairs = pairs
+local tostring = tostring
+local next = next
+--云风提供的
+local function print_r(root)
+    local cache = {  [root] = "." }
+    local function _dump(t,space,name)
+        local temp = {}
+        for k,v in pairs(t) do
+            local key = tostring(k)
+            if cache[v] then
+                tinsert(temp,"+" .. key .. " {" .. cache[v].."}")
+            elseif type(v) == "table" then
+                local new_key = name .. "." .. key
+                cache[v] = new_key
+                tinsert(temp,"+" .. key .. _dump(v,space .. (next(t,k) and "|" or " " ).. srep(" ",#key),new_key))
+            else
+                tinsert(temp,"+" .. key .. " [" .. tostring(v).."]")
+            end
+        end
+        return tconcat(temp,"\n"..space)
+    end
+    print(_dump(root, "",""))
 end
-local proto = require "proto"
-local sproto = require "sproto"
-
-
-
-function print_r ( t )  
+--我自己的
+function print_r_1 ( t )  
     local print_r_cache={}
     local function sub_print_r(t,indent)
         if (print_r_cache[tostring(t)]) then
@@ -44,15 +66,4 @@ function print_r ( t )
 end
 
 
-local myTable = {
-    firstName = "Fred",
-    lastName = "Bob",
-    phoneNumber = "(555) 555-1212",
-    age = 30,
-    favoriteSports = { "Baseball", "Hockey", "Soccer" },
-    favoriteTeams  = { "Cowboys", "Panthers", "Reds" }
-}
-
-print_r(proto)
-
-print_r(myTable)
+return print_r_1
