@@ -1,1 +1,1 @@
-sproto相关API的使用，这个例子不需要skynet,直接用lua分别执行 api_base.lua和api_rpc.lua即可。print_r.lua是用来打印lua的table的函数。
+sproto相关API的使用，api_base.lua里面主要是encode和decode;api_rpc.lua演示了rpc的用法.这个例子不需要skynet,直接用lua分别执行 api_base.lua和api_rpc.lua即可。print_r.lua是用来打印lua的table的函数。

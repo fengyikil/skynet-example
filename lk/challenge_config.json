@@ -1,0 +1,64 @@
+[
+{
+	"id":1,
+	"beginTime": "2018-08-10",
+	"endTime": "2018-10-1",
+	"maxStage": 8,
+	"name": "S1连胜挑战赛",
+	"rate": 100,
+	"maxKeepStage": 3,
+	"ticket": {
+		"mode": 1,
+		"gold": 10,
+		"itemId": 10001,
+		"itemCount": 1
+	},
+	"keepStageCost": [{
+			"winCount": 1,
+			"cost": 800
+		},
+		{
+			"winCount": 2,
+			"cost": 800
+		},
+		{
+			"winCount": 3,
+			"cost": 800
+		},
+		{
+			"winCount": 4,
+			"cost": 800
+		},
+		{
+			"winCount": 5,
+			"cost": 800
+		},
+		{
+			"winCount": 6,
+			"cost": 800
+		},
+		{
+			"winCount": 7,
+			"cost": 800
+		}
+	],
+	"awardConfig": {
+		"stageAward": [{
+				"winCount": 3,
+				"awardGold": 1000
+			},
+			{
+				"winCount": 5,
+				"awardGold": 1200
+			},
+			{
+				"winCount": 7,
+				"awardGold": 1500
+			}
+		],
+		"finalAward": {
+			"totalGold": 1000000
+		}
+	}
+}
+]

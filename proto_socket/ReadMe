@@ -1,0 +1,4 @@
+客戶端和服务器采用proto通信
+./skynet skynet-example/proto_socket/config
+./3rd/lua/lua ./skynet-example/proto_socket/client1.lua
+
