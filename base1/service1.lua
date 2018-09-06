@@ -11,6 +11,7 @@ skynet.register_protocol {
   unpack = skynet.tostring,
 }  
 
+
 -- 这里可以编写各种服务处理函数
 skynet.start(function()
 	print("==========Service1 Start=========")

@@ -6,6 +6,11 @@ skynet.register_protocol {
   pack = function(m) return tostring(m) end,
   unpack = skynet.tostring,
 } 
+
+local lua_path = skynet.getenv("lua_path")
+print("lua_path is ",lua_path)
+print("package.path is ",package.path )
+
 -- 启动服务(启动函数)
 skynet.start(function()
     -- 启动函数里调用Skynet API开发各种服务

@@ -1,4 +1,4 @@
-local h = require "head_file"  
+local h = require "glzp.head_file"  
 
 local msg ={}
 function msg.init(jpack)

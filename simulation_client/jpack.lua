@@ -1,22 +1,26 @@
-package.cpath = "luaclib/?.so;skynet-example/simulation_client/luaclib/?.so"
-package.path = "lualib/?.lua;skynet-example/simulation_client/?.lua;"
-
 -- local ok, socket = pcall(require, "socket")
 local socket = require "client.socket"
 local crypt=require "crypt" 
 local sproto = require "sproto"
-local proto = require "proto"
+local proto = require "glzp.proto"
 local host = sproto.new(proto.s2c):host "package"
 local request = host:attach(sproto.new(proto.c2s))
 
 local host1 = sproto.new(proto.c2s):host "package"
 local request1 = host:attach(sproto.new(proto.s2c))
 
-local h = require "head_file"  
+local h = require "glzp.head_file"  
 
 local PASSWD = "LK_GLZP_2015"
 
 local jpack= {}
+local send_count = 0
+local recv_count = 0
+
+local function debug( ... )
+	jpack.file:write( ... )
+	jpack.file:flush()
+end  
 local function word2String(word)
 	if type(word) ~="number" then
 		return nil
@@ -52,76 +56,74 @@ local function unpack_package(text)
 end
 
 local function print_send_package(msg)
-	jpack.send_count = jpack.send_count +1
+	send_count = send_count +1
 	msg=crypt.aesdecode(msg,PASSWD,"")
 
      --消息头
-     local msgHead = {
+     local head = {
 		msgTag = 0,			--2字节 消息头标签
 		src = 0,			--2字节 源端点
 		dst = 0,			--2字节 目标端点
 		dstModule = 0,		--2字节 目标模块
 		keyAction = 0,		--2字节 动作
 	}
-	msgHead.msgTag = stringGetWord(msg)
-	if msgHead.msgTag == 0xabcd then
-		msgHead.src = stringGetWord(string.sub(msg,3,4))
-		msgHead.dst = stringGetWord(string.sub(msg,5,6))
-		msgHead.dstModule = stringGetWord(string.sub(msg,7,8))
-		msgHead.keyAction = stringGetWord(string.sub(msg,9,10))
+	head.msgTag = stringGetWord(msg)
+	if head.msgTag == 0xabcd then
+		head.src = stringGetWord(string.sub(msg,3,4))
+		head.dst = stringGetWord(string.sub(msg,5,6))
+		head.dstModule = stringGetWord(string.sub(msg,7,8))
+		head.keyAction = stringGetWord(string.sub(msg,9,10))
 		msg = string.sub(msg, 11, #msg)
 	else
 		print("recv Tag is erro!")
 	end
-
-	jpack.file:write(string.format("***************************** SEND  Count : %d Time : %s **************************************************",jpack.send_count,os.date()))
-	jpack.file:write("\n\t <HEAD> \n")
-	for k,v in pairs(msgHead) do
-		jpack.file:write(k," = ",tostring(v),"\n")
-	end
-
-	jpack.file:write("\n\t <MSG> \n")
-
+	
+	debug(string.format("*************** SEND  <Count> : %d  <Head> : { src = %d, dst = %d, dstModule = %d, keyAction = %d, msgTag = %d } <Time> : %s ****************\n\n",send_count,head.src,head.dst,head.dstModule,head.keyAction,head.msgTag,os.date("%X")))
+	-- debug(string.format("msg1 len is %d\n",#msg1))
 	local type,name,data=host1:dispatch(msg)
-	jpack.file:write("type = "..tostring(type).."\n")
+	debug("type = "..tostring(type).."\n")
 	if type == "REQUEST"
 	then
-	jpack.file:write("name = "..tostring(name).."\n")
+	debug("name = "..tostring(name).."\n")
 	else
-	jpack.file:write("session = "..tostring(name).."\n")
+	debug("session = "..tostring(name).."\n")
 	end
-	for k,v in pairs(data) do
-		jpack.file:write(tostring(k)," = ",tostring(v),"\n")
-	end
-	jpack.file:write("\n\n")
-	jpack.file:flush()
+
+	if next(data) ~= nil
+	then
+		debug("{\n")
+		for k,v in pairs(data) do
+			debug("\t",tostring(k)," = ",tostring(v),"\n")
+		end
+		debug("}")
+    end
+	debug("\n\n")
 end
 
-local function print_rec_package(head,type, name,...)
-	jpack.rec_count = jpack.rec_count +1
-	jpack.file:write(string.format("***************************** RECV  Count : %d Time : %s **************************************************",jpack.rec_count,os.date()))
-	jpack.file:write("\n\t <HEAD> \n")
-	for k,v in pairs(head) do
-		jpack.file:write(tostring(k)," = ",tostring(v),"\n")
-	end
-	
-	jpack.file:write("\n\t <MSG> \n")
+local function print_rec_package(head,msg)
+	recv_count = recv_count +1
 
-	jpack.file:write("type = "..tostring(type).."\n")
+	debug(string.format("*************** RECV  <Count> : %d  <Head> : { src = %d, dst = %d, dstModule = %d, keyAction = %d, msgTag = %d } <Time> : %s ****************\n\n",recv_count,head.src,head.dst,head.dstModule,head.keyAction,head.msgTag,os.date("%X")))
+
+	local type,name,data,respond_func,session=host:dispatch(msg)
+	debug("type = "..tostring(type).."\n")
+	-- debug("session = "..tostring(session).."\n")
 	if type == "REQUEST"
 	then
-	jpack.file:write("name = "..tostring(name).."\n")
+	debug("name = "..tostring(name).."\n")
 	else
-	jpack.file:write("session = "..tostring(name).."\n")
+	debug("session = "..tostring(name).."\n")
 	end
-	jpack.file:write("\n")
-	data = ...
-	for k,v in pairs(data) do
-		jpack.file:write(tostring(k)," = ",tostring(v),"\n")
-	end
-	jpack.file:write("\n\n")
-	jpack.file:flush()
 
+	if next(data) ~= nil
+	then
+		debug("{\n")
+		for k,v in pairs(data) do
+			debug("\t",tostring(k)," = ",tostring(v),"\n")
+		end
+		debug("}")
+    end
+	debug("\n\n")
 end
 
 
@@ -197,15 +199,12 @@ function jpack.recPackage()
 		print("recv Tag is erro!")
 	end
 	
-	print_rec_package(msgHead,host:dispatch(msg))
+	print_rec_package(msgHead,msg)
 end
 
 function jpack.init(sFd,file) --socket, 发送file, 接收file
 	jpack.sFd = sFd
 	jpack.file = file
-	jpack.send_count = 0
-    jpack.rec_count = 0
-
 end
 
 return jpack
