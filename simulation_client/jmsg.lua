@@ -30,6 +30,15 @@ function msg.init(jpack)
 		0,
 		h.enumKeyAction.HEARTBEAT
 		)
+	msg.challengeSignIn = jpack.createPackage('challengeSignIn',
+		{
+			challengeId = 1,
+		},
+		h.enumEndPoint.CLIENT,
+		h.enumEndPoint.ROOM_CHALLENGE_MG,
+		0,
+		h.enumKeyAction.CHALLENGE_SIGN_IN
+		)
 end
 
 return msg

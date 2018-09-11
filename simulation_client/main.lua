@@ -15,7 +15,7 @@ jpack.init(sfd,file)
 jmsg.init(jpack)
 
 --心跳消息定时发送
-jtime.createTime("heart",jpack.sendPackage,jmsg["heart"],1,5*1000)
+jtime.createTime("heart",jpack.sendPackage,jmsg["heart"],1,20*1000)
 
 print("Please input cmd:")
 while true do
