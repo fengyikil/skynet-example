@@ -1,8 +1,12 @@
 -- package.cpath = "luaclib/?.so;skynet-example/simulation_client/luaclib/?.so"
 -- package.path = "lualib/?.lua;skynet-example/simulation_client/?.lua;"
 
-package.cpath = "luaclib/?.so;/root/svn/glzp/dev/luaclib/?.so;"
-package.path = "lualib/?.lua;/root/svn/glzp/dev/lualib/?.lua;skynet-example/simulation_client/?.lua;"
+-- package.cpath = "luaclib/?.so;/root/svn/glzp/dev/luaclib/?.so;"
+-- package.path = "lualib/?.lua;/root/svn/glzp/dev/lualib/?.lua;skynet-example/simulation_client/?.lua;"
+
+package.cpath = "luaclib/?.so;/root/svn/glzp/test/luaclib/?.so;"
+package.path = "lualib/?.lua;/root/svn/glzp/test/lualib/?.lua;skynet-example/simulation_client/?.lua;"
+
 local socket = require "client.socket"
 local jpack = require "jpack"
 local PASSWD = "LK_GLZP_2015"

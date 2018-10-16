@@ -72,7 +72,7 @@ end
 
 skynet.start(function()
 	skynet.error("Server start.............jjj")
-	myTimer = newTimer(100, test_time,1)
+	myTimer = newTimer(100, test_time,0)
 	myTimer.start()
 	--skynet.exit()
 	end)

@@ -4,7 +4,7 @@ local msg ={}
 function msg.init(jpack)
 	msg.auth = jpack.createPackage('auth',
 		{
-		userName = "robot88",
+		userName = "robot90",
 		thirdToken = '123456',
 		thirdPlatformID = h.thirdPlatformID.Zipai,
 		-- version = param.appver,
@@ -39,6 +39,30 @@ function msg.init(jpack)
 		0,
 		h.enumKeyAction.CHALLENGE_SIGN_IN
 		)
+	msg.getChallengeSeasonMessage = jpack.createPackage('getChallengeSeasonMessage',
+		{
+		},
+		h.enumEndPoint.CLIENT,
+		h.enumEndPoint.ROOM_CHALLENGE_MG,
+		0,
+		h.enumKeyAction.GET_CHALLENGE_SEASON_MESSAGE
+		)
+	msg.testP1 = jpack.createPackage('testP1',
+		{
+		},
+		h.enumEndPoint.CLIENT,
+		h.enumEndPoint.ROOM_J,
+		0,
+		h.enumKeyAction.TEST_P1
+		)
+	msg.testP2 = jpack.createPackage('testP2',
+		{
+		},
+		h.enumEndPoint.CLIENT,
+		h.enumEndPoint.ROOM_J,
+		0,
+		h.enumKeyAction.TEST_P2
+		)	
 end
 
 return msg
